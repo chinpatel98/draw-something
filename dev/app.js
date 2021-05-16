@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
   socket.on('game:ready', () => {
     game.ready();
     if (game.isPlaying()) {
-      game.emitDrawer();
+      game.emitDrawers();
       drawing.load();
     }
 
@@ -46,7 +46,8 @@ io.on('connection', function (socket) {
 
     if (game.canStart()) {
       game.gameStart();
-      drawing.notifyDrawer(game.getDrawerId());
+      ids = game.getDrawerIds();
+      drawing.notifyDrawers(ids['id1'], ids['id2']);
     }
   });
 

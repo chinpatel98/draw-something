@@ -7,8 +7,8 @@ import { Player } from "./player.model";
       <div class="ui center aligned raised teal segment">
         <p *ngIf="word">Please draw <span class="ui blue header">{{word}}</span></p>
         <p *ngIf="!word">
-          <img src="/images/{{drawer.imageId}}.jpg" class="ui mini middle aligned avatar image">
-          {{drawer.name}} is drawing
+          <img src="/images/{{currentDrawer.imageId}}.jpg" class="ui mini middle aligned avatar image">
+          {{currentDrawer.name}} is drawing
         </p>
         <p>Time left: {{timeLeft}}</p>
       </div>
@@ -23,7 +23,7 @@ import { Player } from "./player.model";
 })
 export class GameComponent implements OnChanges {
   @Input() word: string;
-  @Input() drawer: Player;
+  @Input() currentDrawer: Player;
   @Input() timeLeft: number;
   isDrawer: boolean;
 

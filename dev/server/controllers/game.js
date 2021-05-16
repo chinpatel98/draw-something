@@ -28,20 +28,22 @@ module.exports = class Game {
     }
   }
 
-  emitDrawer() {
-    this.socket.emit('game:start', this.game.drawer);
+  emitDrawers() {
+    this.socket.emit('game:start', this.game.drawers);
   }
 
   gameStart() {
-    this.game.drawer = this.users.nextDrawer();
-    let drawerId = this.game.drawer.id;
+    this.game.drawers = this.users.nextDrawers();
+    let drawerId1 = this.game.drawers['drawer1'].id
+    let drawerId2 = this.game.drawers['drawer2'].id;
     this._countDown();
     this.game.start(() => {
       this.gameEnd();
     });
 
-    this.io.emit('game:start', this.game.drawer);
-    this.io.to(drawerId).emit('game:answer', this.game.answer);
+    this.io.emit('game:start', this.game.drawers);
+    this.io.to(drawerId1).emit('game:answer', this.game.answer);
+    this.io.to(drawerId2).emit('game:answer', this.game.answer);
   }
 
   gameEnd(winner) {
@@ -51,8 +53,8 @@ module.exports = class Game {
     this.io.emit('game:end', { user: winner, message: `Answer is ${this.game.answer}` });
   }
 
-  getDrawerId() {
-    return this.game.drawer.id;
+  getDrawerIds() {
+    return {'id1': this.game.drawers['drawer1'].id, 'id2': this.game.drawers['drawer2'].id};
   }
 
   isPlaying() {
@@ -85,7 +87,7 @@ module.exports = class Game {
     if (this.users.getUserList().length === 0) {
       this.gameEnd();
     }
-    if (this.game.drawer === user) {
+    if (this.game.drawers['drawer1'] === user || this.game.drawers['drawer2'] === user) {
       this.io.emit('game:end', { message: 'Drawer has left the game' });
       this.gameEnd();
     }

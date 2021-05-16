@@ -21,12 +21,15 @@ class Users {
     return this.users[socketId];
   };
 
-  nextDrawer() {
+  nextDrawers() {
     let list = this.getUserList();
-    let drawer = list[this.drawerIndex];
+    let drawer1 = list[this.drawerIndex];
     this.drawerIndex += 1;
     if (this.drawerIndex === list.length) this.drawerIndex = 0;
-    return drawer;
+    let drawer2 = list[this.drawerIndex];
+    this.drawerIndex += 1;
+    if (this.drawerIndex === list.length) this.drawerIndex = 0;
+    return {"drawer1": drawer1, "drawer2": drawer2};
   };
 
   getUserList() {

@@ -9,14 +9,16 @@ import { Player } from "./player.model";
       <lobby [winner]="winner"> </lobby>
      </div>
      <div *ngIf="isPlaying">
-      <game [drawer]="drawer" [word]="word" [timeLeft]="timeLeft"> </game>
+      <game [currentDrawer]="currentDrawer" [word]="word" [timeLeft]="timeLeft"> </game>
      </div>
    </div>
   `
 })
 export class AppComponent implements OnInit {
   word: string;
-  drawer: Player;
+  drawer1: Player;
+  drawer2: Player;
+  currentDrawer: Player;
   isPlaying: boolean;
   winner: Object;
   timeLeft: number;
@@ -28,8 +30,10 @@ export class AppComponent implements OnInit {
 
   public ngOnInit() {
 
-    this.gameService.onGameStart().subscribe((drawer) => {
-      this.drawer = drawer;
+    this.gameService.onGameStart().subscribe((drawers) => {
+      this.drawer1 = drawers['drawer1'];
+      this.drawer2 = drawers['drawer2'];
+      this.currentDrawer = this.drawer1;
       this.isPlaying = true;
     });
 

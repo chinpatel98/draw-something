@@ -5,7 +5,7 @@ class Game {
 
   constructor() {
     this.answer = '';
-    this.drawer = {};
+    this.drawers = {};
     this.useList = 'regular';
     this._wordList = {
       regular: [

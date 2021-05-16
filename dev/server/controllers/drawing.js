@@ -11,8 +11,9 @@ class Drawing {
     this.socket.emit('drawing:load', this.canvas.exportJSON());
   }
 
-  notifyDrawer(drawerId) {
-    this.io.to(drawerId).emit('drawing:drawer');
+  notifyDrawers(drawerId1, drawerId2) {
+    this.io.to(drawerId1).emit('drawing:drawer');
+    this.io.to(drawerId2).emit('drawing:drawer');
   }
 
   onClear() {
