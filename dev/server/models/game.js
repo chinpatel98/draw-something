@@ -13,7 +13,7 @@ class Game {
         'bug', 'duck', 'soccer', 'baseball', 'mario', 'star', 'sheep'
       ],
       dev: [
-        'angular', 'nodejs', 'jquery', 'wordpresss', 'react', 'bootstrap', 'ruby',
+        'angular', 'nodejs', 'jquery', 'wordpress', 'react', 'bootstrap', 'ruby',
         'rails'
       ]
     };

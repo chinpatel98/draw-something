@@ -10,6 +10,9 @@ export class PaperService {
   private color;
   private strokeWidth;
   private path;
+  private maxPoints;
+  private currPoints;
+  private isTurn;
 
   constructor(private socketService: SocketService) {
     this.socket = socketService.socket;
@@ -51,6 +54,11 @@ export class PaperService {
       this.color = brush.color;
       this.strokeWidth = brush.width;
     });
+    this.socket.on('drawing:turnChange', (data) => {
+      this.isTurn = true;
+      this.maxPoints = 30;
+      this.currPoints = 0;
+    });
 
   }
 
@@ -67,14 +75,30 @@ export class PaperService {
   }
 
   public pencil() {
-    this.color = '#000000';
+    this.color = '#0000FF';
     this.strokeWidth = 3;
     this.brushChange();
+  }
+
+  public red() {
+    this.color = '#FF0000';
+    this.strokeWidth = 3;
+    this.brushChange();
+  }
+
+  public startTurn() {
+    this.isTurn = true;
+    this.maxPoints = 30;
+    this.currPoints = 0;
   }
 
   private brushChange() {
     this.socket.emit('drawing:brushChange', { color: this.color, width: this.strokeWidth });
   }
+
+  // private turnChange() {
+  //   this.socket.emit('drawing:turnChange', {});
+  // }
 
   private onMouseDown = (event) => {
     // Create a new path every time the mouse is clicked
@@ -84,9 +108,14 @@ export class PaperService {
 
   private onMouseDrag = (event) => {
     // Add a point to the path every time the mouse is dragged
-    this.path.add(event.point);
-    this.path.smooth();
-    this.socket.emit('drawing:mouseDrag', event.point);
+    this.currPoints ++;
+    if (this.currPoints < this.maxPoints) {
+      this.path.add(event.point);
+      this.path.smooth();
+      this.socket.emit('drawing:mouseDrag', event.point);
+    } else {
+      this.isTurn = false;
+    }
 
   };
 
@@ -103,13 +132,18 @@ export class PaperService {
   };
 
   private setPath(event) {
-    this.path = new paper.Path();
-    this.path.strokeColor = this.color;
-    this.path.strokeWidth = this.strokeWidth;
-    this.path.strokeCap = 'round';
-    this.path.strokeJoin = 'round';
+    this.currPoints ++;
+    if (this.currPoints < this.maxPoints) {
+      this.path = new paper.Path();
+      this.path.strokeColor = this.color;
+      this.path.strokeWidth = this.strokeWidth;
+      this.path.strokeCap = 'round';
+      this.path.strokeJoin = 'round';
 
-    this.path.add(event.point);
+      this.path.add(event.point);
+    } else {
+      this.isTurn = false;
+    }
   }
 
   private loadProject(projectJSON) {

@@ -9,6 +9,7 @@ import { PaperService } from './paper.service';
       <button class="ui button" (click)="clearPaper()">clear</button>
       <button class="ui button" (click)="useEraser()">eraser</button>
       <button class="ui button" (click)="pencil()">pencil</button>
+      <button class="ui button" (click)="red()">red</button>
     </div>
     <canvas 
       id="paper"
@@ -31,6 +32,7 @@ export class PaperComponent implements OnInit, OnDestroy {
       this.isDrawer = true;
     });
     this.pencil();
+    this.startTurn();
   }
 
   ngOnDestroy() {
@@ -47,5 +49,13 @@ export class PaperComponent implements OnInit, OnDestroy {
 
   pencil() {
     this.paperService.pencil();
+  }
+
+  red() {
+    this.paperService.red();
+  }
+
+  startTurn() {
+    this.paperService.startTurn();
   }
 }
