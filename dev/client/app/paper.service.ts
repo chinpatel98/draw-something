@@ -33,6 +33,14 @@ export class PaperService {
     return this.socketService.toObservable('drawing:drawer');
   }
 
+  public getCurrPoints() {
+    return this.currPoints;
+  }
+
+  public getMaxPoints() {
+    return this.maxPoints;
+  }
+
   public reset() {
     this.tool.remove();
   }
